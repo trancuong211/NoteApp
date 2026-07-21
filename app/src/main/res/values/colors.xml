@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="bg_dark">#0F0F1E</color>
+    <color name="bg_card">#1A1A2E</color>
+    <color name="bg_card_lighter">#1E1E30</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#808080</color>
+    <color name="text_muted">#555555</color>
+    <color name="accent_green">#00E676</color>
+    <color name="accent_green_dark">#00C853</color>
+    <color name="accent_purple">#7C4DFF</color>
+    <color name="accent_purple_light">#B388FF</color>
+    <color name="accent_blue">#448AFF</color>
+    <color name="accent_red">#FF5252</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_yellow">#FFEB3B</color>
+    <color name="accent_cyan">#00BCD4</color>
+    <color name="chip_selected">#2A2A4A</color>
+    <color name="chip_default">#1A1A2E</color>
+    <color name="chip_border">#2A2A3E</color>
+    <color name="divider">#2A2A3E</color>
+    <color name="progress_bg">#1E1E30</color>
+    <color name="tag_high_bg">#3D1A1A</color>
+    <color name="tag_high_text">#FF5252</color>
+    <color name="tag_medium_bg">#3D2E0A</color>
+    <color name="tag_medium_text">#FFC107</color>
+    <color name="tag_low_bg">#0A3D2E</color>
+    <color name="tag_low_text">#00E676</color>
+    <color name="tag_work_bg">#1A2A3D</color>
+    <color name="tag_work_text">#448AFF</color>
+    <color name="tag_personal_bg">#2E1A3D</color>
+    <color name="tag_personal_text">#B388FF</color>
+    <color name="tag_study_bg">#1A3D2A</color>
+    <color name="tag_study_text">#00E676</color>
+    <color name="tag_health_bg">#3D1A2E</color>
+    <color name="tag_health_text">#FF5252</color>
+</resources>
