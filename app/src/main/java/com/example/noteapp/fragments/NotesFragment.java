@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noteapp.R;
 import com.example.noteapp.adapter.NoteAdapter;
 import com.example.noteapp.model.Note;
+import com.example.noteapp.util.UserManager;
 import com.example.noteapp.viewmodel.NoteViewModel;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class NotesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        noteViewModel.setUserId(UserManager.getUserId(requireContext()));
 
         tvEmptyState = view.findViewById(R.id.tv_empty_state);
         tvNotesCount = view.findViewById(R.id.tv_notes_count);
@@ -43,19 +45,15 @@ public class NotesFragment extends Fragment {
 
         noteAdapter = new NoteAdapter(new NoteAdapter.OnNoteClickListener() {
             @Override
-            public void onNoteClick(int position) {
-                List<Note> notes = noteViewModel.getNotes().getValue();
-                if (notes != null && position >= 0 && position < notes.size()) {
-                    Note note = notes.get(position);
-                    NoteDetailDialogFragment dialog = NoteDetailDialogFragment.newInstance(
-                            note.getTitle(), note.getContent(), note.getCategory());
-                    dialog.show(getParentFragmentManager(), "NoteDetailDialog");
-                }
+            public void onNoteClick(Note note) {
+                NoteDetailDialogFragment dialog = NoteDetailDialogFragment.newInstance(
+                        note.getTitle(), note.getContent(), note.getCategory());
+                dialog.show(getParentFragmentManager(), "NoteDetailDialog");
             }
 
             @Override
-            public void onDeleteClick(int position) {
-                noteViewModel.removeNote(position);
+            public void onDeleteClick(Note note) {
+                noteViewModel.delete(note);
             }
         });
         rvNotes.setAdapter(noteAdapter);

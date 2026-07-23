@@ -16,13 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Settings"
+            android:text="Cài đặt"
             android:textColor="@color/text_primary"
             android:textSize="28sp"
             android:textStyle="bold" />
 
         <!-- Profile Card -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -38,11 +39,12 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/tv_profile_avatar"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
                     android:background="@drawable/bg_avatar"
                     android:gravity="center"
-                    android:text="MK"
+                    android:text="NA"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -55,9 +57,10 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Trần Minh Khoa"
+                        android:text="Nguyễn Minh Anh"
                         android:textColor="@color/text_primary"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -66,8 +69,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="minhkhoa@email.com"
-                        android:textColor="@color/text_secondary"
+                        android:text="Thành viên Premium"
+                        android:textColor="@color/accent_green"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -79,18 +82,18 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Preferences Section -->
+        <!-- TÙY CHỌN Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:text="PREFERENCES"
+            android:text="TÙY CHỌN"
             android:textColor="@color/accent_blue"
             android:textSize="12sp"
             android:textStyle="bold"
             android:letterSpacing="0.1" />
 
-        <!-- Dark Mode -->
+        <!-- Chế độ tối -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -124,11 +127,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:text="Dark Mode"
+                    android:text="Chế độ tối"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_dark_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -137,7 +141,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Notifications -->
+        <!-- Thông báo -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -156,14 +160,14 @@
                 <FrameLayout
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:background="@drawable/circle_icon_red">
+                    android:background="@drawable/circle_icon_yellow">
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_gravity="center"
                         android:src="@android:drawable/ic_popup_reminder"
-                        app:tint="@color/text_primary" />
+                        app:tint="@color/accent_yellow" />
                 </FrameLayout>
 
                 <TextView
@@ -171,11 +175,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:text="Notifications"
+                    android:text="Thông báo"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -184,8 +189,9 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Reminder Time -->
+        <!-- Nhắc nhở mặc định -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_reminder_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -218,32 +224,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:text="Reminder Time"
+                    android:text="Nhắc nhở mặc định"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30 min before"
+                    android:text="30 phút trước"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Data Section -->
+        <!-- TÀI KHOẢN Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:text="DATA"
+            android:text="TÀI KHOẢN"
             android:textColor="@color/accent_blue"
             android:textSize="12sp"
             android:textStyle="bold"
             android:letterSpacing="0.1" />
 
-        <!-- Export Data -->
+        <!-- Thông tin cá nhân -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_profile_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -267,7 +274,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_upload"
+                        android:src="@android:drawable/ic_menu_edit"
                         app:tint="@color/accent_green" />
                 </FrameLayout>
 
@@ -276,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:text="Export Data"
+                    android:text="Thông tin cá nhân"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
@@ -289,8 +296,9 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Import Data -->
+        <!-- Bảo mật -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_security"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -314,7 +322,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_save"
+                        android:src="@android:drawable/ic_lock_lock"
                         app:tint="@color/accent_blue" />
                 </FrameLayout>
 
@@ -323,7 +331,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:text="Import Data"
+                    android:text="Bảo mật"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
@@ -336,8 +344,9 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Clear All Data -->
+        <!-- Xóa tài khoản -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_delete_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -370,7 +379,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
-                    android:text="Clear All Data"
+                    android:text="Xóa tài khoản"
                     android:textColor="@color/accent_red"
                     android:textSize="15sp" />
 
@@ -383,110 +392,56 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- About Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="ABOUT"
-            android:textColor="@color/accent_blue"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.1" />
-
-        <!-- Version -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Logout Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_logout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:cardBackgroundColor="@color/bg_card"
-            app:cardCornerRadius="16dp"
-            app:strokeWidth="0dp">
+            android:layout_height="52dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/accent_red"
+            android:text="Đăng xuất"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="16dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <FrameLayout
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@drawable/circle_icon_dark">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_info_details"
-                        app:tint="@color/accent_yellow" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:text="Version"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1.0.0"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Privacy Policy -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Export/Import Buttons -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/bg_card"
-            app:cardCornerRadius="16dp"
-            app:strokeWidth="0dp">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_export"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:backgroundTint="@color/accent_green"
+                android:text="Xuất dữ liệu"
+                android:textColor="@color/bg_dark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_save"
+                app:iconTint="@color/bg_dark" />
 
-                <FrameLayout
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@drawable/circle_icon_blue">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_info_details"
-                        app:tint="@color/accent_blue" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:text="Privacy Policy"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="›"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="20sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_import"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="@color/accent_blue"
+                android:text="Nhập dữ liệu"
+                android:textColor="@color/bg_dark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_upload"
+                app:iconTint="@color/bg_dark" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

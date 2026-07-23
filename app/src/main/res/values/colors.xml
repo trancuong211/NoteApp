@@ -8,38 +8,54 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="bg_dark">#0F0F1E</color>
-    <color name="bg_card">#1A1A2E</color>
-    <color name="bg_card_lighter">#1E1E30</color>
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#808080</color>
+    <color name="bg_dark">#0D0D1A</color>
+    <color name="bg_card">#161628</color>
+    <color name="bg_card_lighter">#1E1E35</color>
+    <color name="text_primary">#F0F0FF</color>
+    <color name="text_secondary">#6B6B9A</color>
     <color name="text_muted">#555555</color>
-    <color name="accent_green">#00E676</color>
-    <color name="accent_green_dark">#00C853</color>
-    <color name="accent_purple">#7C4DFF</color>
+
+    <color name="accent_green">#00D68F</color>
+    <color name="accent_green_dark">#00B377</color>
+    <color name="accent_purple">#7C3AED</color>
     <color name="accent_purple_light">#B388FF</color>
-    <color name="accent_blue">#448AFF</color>
-    <color name="accent_red">#FF5252</color>
+    <color name="accent_blue">#38BDF8</color>
+    <color name="accent_red">#FF6B6B</color>
     <color name="accent_orange">#FF9800</color>
-    <color name="accent_yellow">#FFEB3B</color>
+    <color name="accent_yellow">#F59E0B</color>
     <color name="accent_cyan">#00BCD4</color>
+    <color name="accent_pink">#EC4899</color>
+
     <color name="chip_selected">#2A2A4A</color>
     <color name="chip_default">#1A1A2E</color>
     <color name="chip_border">#2A2A3E</color>
     <color name="divider">#2A2A3E</color>
     <color name="progress_bg">#1E1E30</color>
+
     <color name="tag_high_bg">#3D1A1A</color>
-    <color name="tag_high_text">#FF5252</color>
+    <color name="tag_high_text">#FF6B6B</color>
     <color name="tag_medium_bg">#3D2E0A</color>
-    <color name="tag_medium_text">#FFC107</color>
+    <color name="tag_medium_text">#F59E0B</color>
     <color name="tag_low_bg">#0A3D2E</color>
-    <color name="tag_low_text">#00E676</color>
+    <color name="tag_low_text">#38BDF8</color>
+
     <color name="tag_work_bg">#1A2A3D</color>
-    <color name="tag_work_text">#448AFF</color>
+    <color name="tag_work_text">#00D68F</color>
     <color name="tag_personal_bg">#2E1A3D</color>
-    <color name="tag_personal_text">#B388FF</color>
-    <color name="tag_study_bg">#1A3D2A</color>
-    <color name="tag_study_text">#00E676</color>
+    <color name="tag_personal_text">#7C3AED</color>
+    <color name="tag_study_bg">#1A3D3D</color>
+    <color name="tag_study_text">#38BDF8</color>
     <color name="tag_health_bg">#3D1A2E</color>
-    <color name="tag_health_text">#FF5252</color>
+    <color name="tag_health_text">#FF6B6B</color>
+
+    <color name="nav_active">#00D68F</color>
+    <color name="nav_inactive">#6B6B9A</color>
+
+    <color name="card_border">#1A1A2E</color>
+    <color name="input_bg">#161628</color>
+    <color name="input_border">#2A2A3E</color>
+
+    <color name="priority_high">#FF6B6B</color>
+    <color name="priority_medium">#F59E0B</color>
+    <color name="priority_low">#38BDF8</color>
 </resources>

@@ -18,8 +18,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     private OnNoteClickListener listener;
 
     public interface OnNoteClickListener {
-        void onNoteClick(int position);
-        void onDeleteClick(int position);
+        void onNoteClick(Note note);
+        void onDeleteClick(Note note);
     }
 
     public NoteAdapter(OnNoteClickListener listener) {
@@ -50,13 +50,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onDeleteClick(holder.getAdapterPosition());
+                listener.onDeleteClick(note);
             }
         });
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onNoteClick(holder.getAdapterPosition());
+                listener.onNoteClick(note);
             }
         });
     }

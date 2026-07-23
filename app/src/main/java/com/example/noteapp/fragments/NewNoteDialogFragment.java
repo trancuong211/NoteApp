@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.noteapp.R;
 import com.example.noteapp.model.Note;
+import com.example.noteapp.util.UserManager;
 import com.example.noteapp.viewmodel.NoteViewModel;
 
 public class NewNoteDialogFragment extends DialogFragment {
@@ -84,7 +85,8 @@ public class NewNoteDialogFragment extends DialogFragment {
                 return;
             }
             Note newNote = new Note(title, content, selectedCategory);
-            noteViewModel.addNote(newNote);
+            newNote.setUserId(UserManager.getUserId(requireContext()));
+            noteViewModel.insert(newNote);
             dismiss();
         });
     }

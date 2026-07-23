@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.noteapp.R;
 import com.example.noteapp.model.Task;
+import com.example.noteapp.util.UserManager;
 import com.example.noteapp.view.PieChartView;
 import com.example.noteapp.viewmodel.NoteViewModel;
 import com.example.noteapp.viewmodel.TaskViewModel;
@@ -58,6 +59,9 @@ public class StatsFragment extends Fragment {
 
         taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        int userId = UserManager.getUserId(requireContext());
+        taskViewModel.setUserId(userId);
+        noteViewModel.setUserId(userId);
 
         initViews(view);
         setupBarChartClickListeners();
@@ -186,7 +190,12 @@ public class StatsFragment extends Fragment {
 
     private void updateSummaryCards(List<Task> tasks) {
         int total = tasks != null ? tasks.size() : 0;
-        int completed = taskViewModel.getDoneCount();
+        int completed = 0;
+        if (tasks != null) {
+            for (Task task : tasks) {
+                if (task.isDone()) completed++;
+            }
+        }
 
         tvTotalTasks.setText(String.valueOf(total));
         tvCompleted.setText(String.valueOf(completed));
@@ -261,7 +270,12 @@ public class StatsFragment extends Fragment {
 
     private void updateCompletionRate(List<Task> tasks) {
         int total = tasks != null ? tasks.size() : 0;
-        int done = taskViewModel.getDoneCount();
+        int done = 0;
+        if (tasks != null) {
+            for (Task task : tasks) {
+                if (task.isDone()) done++;
+            }
+        }
         int remaining = total - done;
 
         int percent = total > 0 ? (done * 100 / total) : 0;

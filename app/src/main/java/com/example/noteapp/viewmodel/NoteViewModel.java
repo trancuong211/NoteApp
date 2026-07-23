@@ -1,37 +1,49 @@
 package com.example.noteapp.viewmodel;
 
+import android.app.Application;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import com.example.noteapp.data.AppDatabase;
+import com.example.noteapp.data.NoteDao;
 import com.example.noteapp.model.Note;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class NoteViewModel extends ViewModel {
-    private final MutableLiveData<List<Note>> notes = new MutableLiveData<>(new ArrayList<>());
+public class NoteViewModel extends AndroidViewModel {
 
-    public LiveData<List<Note>> getNotes() {
-        return notes;
+    private final NoteDao noteDao;
+    private final ExecutorService executor;
+    private int userId;
+    private LiveData<List<Note>> allNotes;
+    private LiveData<Integer> noteCount;
+
+    public NoteViewModel(@NonNull Application application) {
+        super(application);
+        AppDatabase db = AppDatabase.getInstance(application);
+        noteDao = db.noteDao();
+        executor = Executors.newSingleThreadExecutor();
     }
 
-    public void addNote(Note note) {
-        List<Note> currentNotes = notes.getValue();
-        if (currentNotes != null) {
-            currentNotes.add(0, note);
-            notes.setValue(currentNotes);
-        }
+    public void setUserId(int userId) {
+        this.userId = userId;
+        allNotes = noteDao.getAll(userId);
+        noteCount = noteDao.getCount(userId);
     }
 
-    public void removeNote(int position) {
-        List<Note> currentNotes = notes.getValue();
-        if (currentNotes != null && position >= 0 && position < currentNotes.size()) {
-            currentNotes.remove(position);
-            notes.setValue(currentNotes);
-        }
+    public LiveData<List<Note>> getNotes() { return allNotes; }
+    public LiveData<Integer> getNoteCount() { return noteCount; }
+
+    public void insert(Note note) {
+        executor.execute(() -> noteDao.insert(note));
     }
 
-    public int getNoteCount() {
-        List<Note> currentNotes = notes.getValue();
-        return currentNotes != null ? currentNotes.size() : 0;
+    public void delete(Note note) {
+        executor.execute(() -> noteDao.delete(note));
+    }
+
+    public void deleteById(int id) {
+        executor.execute(() -> noteDao.deleteById(id));
     }
 }

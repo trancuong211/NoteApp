@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark">
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tasks"
+                android:text="Nhiệm vụ"
                 android:textColor="@color/text_primary"
                 android:textSize="28sp"
                 android:textStyle="bold" />
@@ -36,187 +37,178 @@
                 android:gravity="center"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="+ Add"
+                android:text="+ Thêm"
                 android:textColor="@color/accent_green"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Search Bar -->
-        <LinearLayout
+        <!-- Category Filter Chips -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Danh mục"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp" />
+
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_search_bar"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:layout_marginBottom="12dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:scrollbars="none"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="24dp"
+            android:requiresFadingEdge="horizontal">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="@color/text_secondary" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/chip_category_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Search tasks..."
-                android:textColor="@color/text_muted"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-        <!-- Sort Chips -->
-        <LinearLayout
-            android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/chip_cat_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_chip_selected"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="Tất cả"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/chip_cat_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="💼 Công việc"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/chip_cat_personal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="👤 Cá nhân"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/chip_cat_study"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="📚 Học tập"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/chip_cat_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="❤️ Sức khỏe"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Status Filter Chips -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:text="Trạng thái"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@drawable/bg_chip_selected"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="⬇ Deadline"
-                android:textColor="@color/accent_green"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_default"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="⬇ Priority"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_default"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="⬇ Status"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Category Filter Chips -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@drawable/bg_chip_selected"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="All"
-                android:textColor="@color/text_primary"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_default"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="💼 Work"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_default"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="👤 Personal"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_default"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="📚 Study"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_default"
-                android:gravity="center"
-                android:text="⭐"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-        <!-- Priority Filter Chips -->
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+            android:scrollbars="none"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="24dp"
+            android:requiresFadingEdge="horizontal">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/chip_status_row"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@drawable/bg_tag_high"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="🚩 High"
-                android:textColor="@color/tag_high_text"
-                android:textSize="12sp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_tag_medium"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="🏷 Medium"
-                android:textColor="@color/tag_medium_text"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/chip_status_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_chip_selected"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="Tất cả"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_tag_low"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="🏷 Low"
-                android:textColor="@color/tag_low_text"
-                android:textSize="12sp" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/chip_status_todo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="⏳ Chờ làm"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/chip_status_inprogress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="⚡ Đang làm"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/chip_status_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_default"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="✅ Hoàn thành"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <!-- Empty state -->
         <TextView
@@ -224,19 +216,211 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="60dp"
-            android:paddingBottom="60dp"
-            android:text="✅\n\nNo tasks yet.\nTap + to create your first task!"
-            android:textColor="@color/text_muted"
+            android:paddingTop="80dp"
+            android:paddingBottom="80dp"
+            android:text="✅\n\nKhông tìm thấy nhiệm vụ nào"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
-            android:lineSpacingExtra="4dp" />
+            android:lineSpacingExtra="4dp"
+            android:visibility="gone" />
 
-        <!-- Task RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tasks"
+        <!-- Grouped Task Sections -->
+        <LinearLayout
+            android:id="@+id/grouped_sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- In Progress Group -->
+            <LinearLayout
+                android:id="@+id/group_inprogress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/header_inprogress"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp">
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@color/accent_yellow" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:text="Đang thực hiện"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/count_inprogress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:minWidth="22dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_chip_selected"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp" />
+
+                    <TextView
+                        android:id="@+id/toggle_inprogress"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:gravity="center"
+                        android:text="▼"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tasks_inprogress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp">
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Todo Group -->
+            <LinearLayout
+                android:id="@+id/group_todo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/header_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp">
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@color/accent_blue" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:text="Chờ làm"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/count_todo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:minWidth="22dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_chip_selected"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp" />
+
+                    <TextView
+                        android:id="@+id/toggle_todo"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:gravity="center"
+                        android:text="▼"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tasks_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp">
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Done Group -->
+            <LinearLayout
+                android:id="@+id/group_done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/header_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp">
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@color/accent_green" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:text="Hoàn thành"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/count_done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:minWidth="22dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_chip_selected"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp" />
+
+                    <TextView
+                        android:id="@+id/toggle_done"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:gravity="center"
+                        android:text="▼"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tasks_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp">
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

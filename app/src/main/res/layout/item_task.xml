@@ -8,12 +8,13 @@
     android:orientation="horizontal"
     android:padding="12dp">
 
-    <CheckBox
-        android:id="@+id/cb_task_done"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:buttonTint="@color/text_secondary" />
+    <!-- Status circle indicator -->
+    <View
+        android:id="@+id/status_indicator"
+        android:layout_width="14dp"
+        android:layout_height="14dp" />
 
+    <!-- Center content: title + badges row -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,12 +33,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_task_category"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
+                android:gravity="center"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:textColor="@color/text_secondary"
@@ -48,13 +51,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginStart="6dp"
+                android:gravity="center"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
+
+            <!-- Deadline row -->
+            <LinearLayout
+                android:id="@+id/row_deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_clock_small" />
+
+                <TextView
+                    android:id="@+id/tv_task_deadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Delete button -->
     <ImageView
         android:id="@+id/btn_delete"
         android:layout_width="32dp"

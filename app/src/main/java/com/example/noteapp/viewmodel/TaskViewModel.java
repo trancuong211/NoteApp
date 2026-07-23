@@ -1,61 +1,82 @@
 package com.example.noteapp.viewmodel;
 
+import android.app.Application;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import com.example.noteapp.data.AppDatabase;
+import com.example.noteapp.data.TaskDao;
 import com.example.noteapp.model.Task;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class TaskViewModel extends ViewModel {
-    private final MutableLiveData<List<Task>> tasks = new MutableLiveData<>(new ArrayList<>());
+public class TaskViewModel extends AndroidViewModel {
 
-    public LiveData<List<Task>> getTasks() {
-        return tasks;
+    private final TaskDao taskDao;
+    private final ExecutorService executor;
+    private int userId;
+    private LiveData<List<Task>> allTasks;
+    private LiveData<Integer> totalCount;
+    private LiveData<Integer> doneCount;
+    private LiveData<Integer> pendingCount;
+    private LiveData<Integer> inProgressCount;
+
+    public TaskViewModel(@NonNull Application application) {
+        super(application);
+        AppDatabase db = AppDatabase.getInstance(application);
+        taskDao = db.taskDao();
+        executor = Executors.newSingleThreadExecutor();
     }
 
-    public void addTask(Task task) {
-        List<Task> currentTasks = tasks.getValue();
-        if (currentTasks != null) {
-            currentTasks.add(0, task);
-            tasks.setValue(currentTasks);
-        }
+    public void setUserId(int userId) {
+        this.userId = userId;
+        allTasks = taskDao.getAll(userId);
+        totalCount = taskDao.getCount(userId);
+        doneCount = taskDao.getDoneCount(userId);
+        pendingCount = taskDao.getPendingCount(userId);
+        inProgressCount = taskDao.getInProgressCount(userId);
     }
 
-    public void removeTask(int position) {
-        List<Task> currentTasks = tasks.getValue();
-        if (currentTasks != null && position >= 0 && position < currentTasks.size()) {
-            currentTasks.remove(position);
-            tasks.setValue(currentTasks);
-        }
+    public LiveData<List<Task>> getTasks() { return allTasks; }
+    public LiveData<Integer> getTotalCount() { return totalCount; }
+    public LiveData<Integer> getDoneCount() { return doneCount; }
+    public LiveData<Integer> getPendingCount() { return pendingCount; }
+    public LiveData<Integer> getInProgressCount() { return inProgressCount; }
+
+    public LiveData<List<Task>> getTasksForDate(String dateKey) {
+        return taskDao.getByDate(userId, dateKey);
     }
 
-    public void toggleTaskDone(int position) {
-        List<Task> currentTasks = tasks.getValue();
-        if (currentTasks != null && position >= 0 && position < currentTasks.size()) {
-            Task task = currentTasks.get(position);
-            task.setDone(!task.isDone());
-            tasks.setValue(currentTasks);
-        }
+    public void insert(Task task) {
+        executor.execute(() -> taskDao.insert(task));
     }
 
-    public int getPendingCount() {
-        List<Task> currentTasks = tasks.getValue();
-        if (currentTasks == null) return 0;
-        int count = 0;
-        for (Task task : currentTasks) {
-            if (!task.isDone()) count++;
-        }
-        return count;
+    public void update(Task task) {
+        executor.execute(() -> taskDao.update(task));
     }
 
-    public int getDoneCount() {
-        List<Task> currentTasks = tasks.getValue();
-        if (currentTasks == null) return 0;
-        int count = 0;
-        for (Task task : currentTasks) {
-            if (task.isDone()) count++;
-        }
-        return count;
+    public void delete(Task task) {
+        executor.execute(() -> taskDao.delete(task));
+    }
+
+    public void deleteById(int id) {
+        executor.execute(() -> taskDao.deleteById(id));
+    }
+
+    public void toggleTaskDone(Task task) {
+        executor.execute(() -> {
+            String newStatus = "done".equals(task.getStatus()) ? "todo" : "done";
+            task.setStatus(newStatus);
+            taskDao.update(task);
+        });
+    }
+
+    public void setTaskStatus(Task task, String status) {
+        executor.execute(() -> {
+            task.setStatus(status);
+            taskDao.update(task);
+        });
     }
 }
