@@ -17,7 +17,6 @@ import com.example.noteapp.R;
 import com.example.noteapp.model.Task;
 import com.example.noteapp.util.UserManager;
 import com.example.noteapp.view.PieChartView;
-import com.example.noteapp.viewmodel.NoteViewModel;
 import com.example.noteapp.viewmodel.TaskViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,11 +26,9 @@ import java.util.List;
 public class StatsFragment extends Fragment {
 
     private TaskViewModel taskViewModel;
-    private NoteViewModel noteViewModel;
 
     private TextView tvTotalTasks;
     private TextView tvCompleted;
-    private TextView tvNotes;
     private TextView tvCompletionRate;
     private TextView tvDone;
     private TextView tvRemaining;
@@ -58,10 +55,8 @@ public class StatsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
-        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         int userId = UserManager.getUserId(requireContext());
         taskViewModel.setUserId(userId);
-        noteViewModel.setUserId(userId);
 
         initViews(view);
         setupBarChartClickListeners();
@@ -71,7 +66,6 @@ public class StatsFragment extends Fragment {
     private void initViews(View view) {
         tvTotalTasks = view.findViewById(R.id.tv_total_tasks);
         tvCompleted = view.findViewById(R.id.tv_completed);
-        tvNotes = view.findViewById(R.id.tv_notes_count);
         tvCompletionRate = view.findViewById(R.id.tv_completion_rate);
         tvDone = view.findViewById(R.id.tv_done);
         tvRemaining = view.findViewById(R.id.tv_remaining);
@@ -182,10 +176,6 @@ public class StatsFragment extends Fragment {
             updateCompletionRate(tasks);
             updatePieCharts(tasks);
         });
-
-        noteViewModel.getNotes().observe(getViewLifecycleOwner(), notes -> {
-            tvNotes.setText(String.valueOf(notes != null ? notes.size() : 0));
-        });
     }
 
     private void updateSummaryCards(List<Task> tasks) {
@@ -288,7 +278,6 @@ public class StatsFragment extends Fragment {
     private void updatePieCharts(List<Task> tasks) {
         if (tasks == null) return;
 
-        // Category pie chart
         int work = 0, personal = 0, study = 0, health = 0;
         for (Task task : tasks) {
             switch (task.getCategory()) {
@@ -303,14 +292,13 @@ public class StatsFragment extends Fragment {
                 (float) work, (float) personal, (float) study, (float) health
         );
         List<Integer> categoryColors = Arrays.asList(
-                Color.parseColor("#00E676"),  // Work - green
-                Color.parseColor("#B388FF"),  // Personal - purple
-                Color.parseColor("#448AFF"),  // Study - blue
-                Color.parseColor("#FF5252")   // Health - red
+                Color.parseColor("#00E676"),
+                Color.parseColor("#B388FF"),
+                Color.parseColor("#448AFF"),
+                Color.parseColor("#FF5252")
         );
         pieChartCategory.setData(categoryValues, categoryColors);
 
-        // Priority pie chart
         int high = 0, medium = 0, low = 0;
         for (Task task : tasks) {
             switch (task.getPriority()) {

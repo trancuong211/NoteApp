@@ -41,6 +41,7 @@ public class CalendarFragment extends Fragment {
     private Calendar selectedCalendar;
     private TextView tvMonthYear;
     private TextView tvSelectedDate;
+    private TextView tvTaskCount;
     private GridLayout calendarGrid;
     private RecyclerView rvDayTasks;
     private LinearLayout emptyStateLayout;
@@ -76,6 +77,7 @@ public class CalendarFragment extends Fragment {
     private void initViews(View view) {
         tvMonthYear = view.findViewById(R.id.tvMonthYear);
         tvSelectedDate = view.findViewById(R.id.tvSelectedDate);
+        tvTaskCount = view.findViewById(R.id.tvTaskCount);
         calendarGrid = view.findViewById(R.id.calendarGrid);
         rvDayTasks = view.findViewById(R.id.rvDayTasks);
         emptyStateLayout = view.findViewById(R.id.emptyStateLayout);
@@ -126,7 +128,7 @@ public class CalendarFragment extends Fragment {
         int month = currentCalendar.get(Calendar.MONTH);
 
         String monthName = getMonthName(month);
-        tvMonthYear.setText(monthName + " - " + year);
+        tvMonthYear.setText(monthName + " " + year);
 
         buildCalendarGrid(year, month);
     }
@@ -260,7 +262,20 @@ public class CalendarFragment extends Fragment {
         int day = selectedCalendar.get(Calendar.DAY_OF_MONTH);
         int month = selectedCalendar.get(Calendar.MONTH) + 1;
         int year = selectedCalendar.get(Calendar.YEAR);
-        tvSelectedDate.setText("Nhiệm vụ ngày " + day + "/" + month + "/" + year);
+
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+        if (selectedCalendar.equals(today)) {
+            tvSelectedDate.setText("Hôm nay");
+        } else {
+            tvSelectedDate.setText("Ngày " + day + " tháng " + month);
+        }
+
+        tvTaskCount.setText(dayTasks.size() + " nhiệm vụ");
 
         if (dayTasks.isEmpty()) {
             rvDayTasks.setVisibility(View.GONE);

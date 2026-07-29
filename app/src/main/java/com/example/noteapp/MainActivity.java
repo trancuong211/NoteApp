@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import com.example.noteapp.fragments.CalendarFragment;
 import com.example.noteapp.fragments.HomeFragment;
 import com.example.noteapp.fragments.NewTaskDialogFragment;
-import com.example.noteapp.fragments.NotesFragment;
 import com.example.noteapp.fragments.ReminderFragment;
 import com.example.noteapp.fragments.SettingsFragment;
 import com.example.noteapp.fragments.StatsFragment;
@@ -48,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
                 fab.setVisibility(View.VISIBLE);
-            } else if (itemId == R.id.nav_notes) {
-                selectedFragment = new NotesFragment();
+            } else if (itemId == R.id.nav_calendar) {
+                selectedFragment = new CalendarFragment();
                 fab.setVisibility(View.GONE);
             } else if (itemId == R.id.nav_tasks) {
                 selectedFragment = new TasksFragment();

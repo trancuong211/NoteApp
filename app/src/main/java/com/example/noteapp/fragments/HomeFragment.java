@@ -19,7 +19,6 @@ import com.example.noteapp.model.Reminder;
 import com.example.noteapp.model.Task;
 import com.example.noteapp.util.TaskScheduler;
 import com.example.noteapp.util.UserManager;
-import com.example.noteapp.viewmodel.NoteViewModel;
 import com.example.noteapp.viewmodel.ReminderViewModel;
 import com.example.noteapp.viewmodel.TaskViewModel;
 import com.example.noteapp.viewmodel.UserViewModel;
@@ -31,7 +30,6 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private TaskViewModel taskViewModel;
-    private NoteViewModel noteViewModel;
     private ReminderViewModel reminderViewModel;
     private UserViewModel userViewModel;
 
@@ -63,13 +61,11 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
-        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         reminderViewModel = new ViewModelProvider(requireActivity()).get(ReminderViewModel.class);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         int userId = UserManager.getUserId(requireContext());
         taskViewModel.setUserId(userId);
-        noteViewModel.setUserId(userId);
         reminderViewModel.setUserId(userId);
 
         initViews(view);
@@ -145,7 +141,7 @@ public class HomeFragment extends Fragment {
             dialog.show(getParentFragmentManager(), "NewTaskDialog");
         });
 
-        view.findViewById(R.id.btn_calendar).setOnClickListener(v -> switchTab(R.id.nav_tasks));
+        view.findViewById(R.id.btn_calendar).setOnClickListener(v -> switchTab(R.id.nav_calendar));
 
         view.findViewById(R.id.btn_reminders).setOnClickListener(v -> switchTab(R.id.nav_reminder));
 

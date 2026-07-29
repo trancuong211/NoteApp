@@ -5,9 +5,9 @@
         android:icon="@drawable/ic_nav_home"
         android:title="Trang chủ" />
     <item
-        android:id="@+id/nav_notes"
-        android:icon="@drawable/ic_nav_notes"
-        android:title="Ghi chú" />
+        android:id="@+id/nav_calendar"
+        android:icon="@drawable/ic_nav_calendar"
+        android:title="Lịch" />
     <item
         android:id="@+id/nav_tasks"
         android:icon="@drawable/ic_nav_tasks"

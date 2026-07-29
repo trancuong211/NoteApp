@@ -3,7 +3,6 @@ package com.example.noteapp.util;
 import android.content.Context;
 import android.os.Environment;
 import com.example.noteapp.data.AppDatabase;
-import com.example.noteapp.model.Note;
 import com.example.noteapp.model.Reminder;
 import com.example.noteapp.model.Task;
 import com.example.noteapp.model.User;
@@ -75,20 +74,6 @@ public class DataManager {
                         remindersArray.put(reminderObj);
                     }
                     userObj.put("reminders", remindersArray);
-
-                    List<Note> notes = db.noteDao().getAllSync(user.getId());
-                    JSONArray notesArray = new JSONArray();
-                    for (Note note : notes) {
-                        JSONObject noteObj = new JSONObject();
-                        noteObj.put("id", note.getId());
-                        noteObj.put("title", note.getTitle());
-                        noteObj.put("content", note.getContent());
-                        noteObj.put("category", note.getCategory());
-                        noteObj.put("createdAt", note.getCreatedAt());
-                        noteObj.put("userId", note.getUserId());
-                        notesArray.put(noteObj);
-                    }
-                    userObj.put("notes", notesArray);
 
                     usersArray.put(userObj);
                 }
@@ -196,19 +181,6 @@ public class DataManager {
                         );
                         reminder.setUserId(userIdInt);
                         db.reminderDao().insert(reminder);
-                    }
-
-                    JSONArray notesArray = userObj.getJSONArray("notes");
-                    for (int j = 0; j < notesArray.length(); j++) {
-                        JSONObject noteObj = notesArray.getJSONObject(j);
-                        Note note = new Note(
-                                noteObj.getString("title"),
-                                noteObj.getString("content"),
-                                noteObj.getString("category")
-                        );
-                        note.setCreatedAt(noteObj.getLong("createdAt"));
-                        note.setUserId(userIdInt);
-                        db.noteDao().insert(note);
                     }
                 }
 
