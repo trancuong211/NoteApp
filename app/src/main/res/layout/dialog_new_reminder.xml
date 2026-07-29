@@ -64,8 +64,10 @@
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_input_field"
+        android:focusable="false"
+        android:clickable="true"
         android:hint="08:00"
-        android:inputType="time"
+        android:inputType="none"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textColor="@color/text_primary"
@@ -151,74 +153,85 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        app:singleSelection="true"
+        app:singleSelection="false"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_once"
+            android:id="@+id/chip_mon"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Một lần"
-            android:textColor="@color/text_secondary"
-            app:chipBackgroundColor="@color/chip_default"
-            app:chipStrokeColor="@color/chip_border"
-            app:chipStrokeWidth="1dp" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_daily"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hàng ngày"
-            android:textColor="@color/accent_green"
-            app:chipBackgroundColor="@color/chip_selected"
-            app:chipStrokeColor="@color/accent_green"
+            android:text="Thứ 2"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
             app:chipStrokeWidth="1dp"
             android:checked="true" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_workdays"
+            android:id="@+id/chip_tue"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ngày làm việc"
-            android:textColor="@color/text_secondary"
-            app:chipBackgroundColor="@color/chip_default"
-            app:chipStrokeColor="@color/chip_border"
+            android:text="Thứ 3"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_weekend"
+            android:id="@+id/chip_wed"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cuối tuần"
-            android:textColor="@color/text_secondary"
-            app:chipBackgroundColor="@color/chip_default"
-            app:chipStrokeColor="@color/chip_border"
+            android:text="Thứ 4"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_weekly"
+            android:id="@+id/chip_thu"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hàng tuần"
-            android:textColor="@color/text_secondary"
-            app:chipBackgroundColor="@color/chip_default"
-            app:chipStrokeColor="@color/chip_border"
+            android:text="Thứ 5"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_monthly"
+            android:id="@+id/chip_fri"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hàng tháng"
-            android:textColor="@color/text_secondary"
-            app:chipBackgroundColor="@color/chip_default"
-            app:chipStrokeColor="@color/chip_border"
+            android:text="Thứ 6"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
+            app:chipStrokeWidth="1dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sat"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thứ 7"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
+            app:chipStrokeWidth="1dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sun"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chủ nhật"
+            android:textColor="@drawable/chip_repeat_text_selector"
+            app:chipBackgroundColor="@drawable/chip_repeat_bg_selector"
+            app:chipStrokeColor="@drawable/chip_repeat_stroke_selector"
             app:chipStrokeWidth="1dp" />
     </com.google.android.material.chip.ChipGroup>
 

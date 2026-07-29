@@ -31,6 +31,9 @@ public class TaskDetailDialogFragment extends DialogFragment {
         args.putString("priority", task.getPriority());
         args.putString("status", task.getStatus());
         args.putBoolean("isDone", task.isDone());
+        args.putString("startTime", task.getStartTime());
+        args.putString("deadline", task.getDeadline());
+        args.putString("dateKey", task.getDateKey());
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +57,7 @@ public class TaskDetailDialogFragment extends DialogFragment {
         TextView tvPriority = view.findViewById(R.id.tv_task_priority);
         TextView btnCloseDialog = view.findViewById(R.id.btn_close_dialog);
         TextView btnDeleteTask = view.findViewById(R.id.btn_delete_task);
+        TextView btnEditTask = view.findViewById(R.id.btn_edit_task);
 
         if (getArguments() != null) {
             String title = getArguments().getString("title");
@@ -73,8 +77,16 @@ public class TaskDetailDialogFragment extends DialogFragment {
                 statusLabel = "Chờ làm";
             }
             tvStatus.setText(statusLabel);
-            tvStatus.setTextColor(getResources().getColor(isDone ? R.color.tag_low_text : R.color.tag_high_text));
-            tvStatus.setBackgroundResource(isDone ? R.drawable.bg_tag_low : R.drawable.bg_tag_high);
+            if ("done".equals(status)) {
+                tvStatus.setTextColor(getResources().getColor(R.color.tag_low_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_tag_low);
+            } else if ("inprogress".equals(status)) {
+                tvStatus.setTextColor(getResources().getColor(R.color.tag_medium_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_tag_medium);
+            } else {
+                tvStatus.setTextColor(getResources().getColor(R.color.tag_high_text));
+                tvStatus.setBackgroundResource(R.drawable.bg_tag_high);
+            }
 
             tvCategory.setText(getCategoryEmoji(category) + " " + category);
             tvCategory.setBackgroundResource(getCategoryBackground(category));
@@ -87,6 +99,25 @@ public class TaskDetailDialogFragment extends DialogFragment {
 
         btnClose.setOnClickListener(v -> dismiss());
         btnCloseDialog.setOnClickListener(v -> dismiss());
+
+        btnEditTask.setOnClickListener(v -> {
+            if (getArguments() != null) {
+                Task taskToEdit = new Task();
+                taskToEdit.setId(getArguments().getInt("id", 0));
+                taskToEdit.setTitle(getArguments().getString("title", ""));
+                taskToEdit.setCategory(getArguments().getString("category", ""));
+                taskToEdit.setPriority(getArguments().getString("priority", ""));
+                taskToEdit.setStatus(getArguments().getString("status", "todo"));
+                taskToEdit.setStartTime(getArguments().getString("startTime", ""));
+                taskToEdit.setDeadline(getArguments().getString("deadline", ""));
+                taskToEdit.setDateKey(getArguments().getString("dateKey", ""));
+                taskToEdit.setUserId(com.example.noteapp.util.UserManager.getUserId(requireContext()));
+
+                dismiss();
+                EditTaskDialogFragment editDialog = EditTaskDialogFragment.newInstance(taskToEdit);
+                editDialog.show(getParentFragmentManager(), "EditTaskDialog");
+            }
+        });
 
         btnDeleteTask.setOnClickListener(v -> {
             new AlertDialog.Builder(requireContext())

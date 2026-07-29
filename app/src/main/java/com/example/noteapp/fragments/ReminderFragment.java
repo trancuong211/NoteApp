@@ -74,8 +74,7 @@ public class ReminderFragment extends Fragment {
         rvInactiveReminders.setLayoutManager(new LinearLayoutManager(getContext()));
         rvQueueReminders.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        TextView btnAddReminder = view.findViewById(R.id.btn_add_reminder);
-        btnAddReminder.setOnClickListener(v -> {
+        view.findViewById(R.id.btn_add_reminder).setOnClickListener(v -> {
             NewReminderDialogFragment dialog = new NewReminderDialogFragment();
             dialog.show(getParentFragmentManager(), "NewReminderDialog");
         });
@@ -180,47 +179,38 @@ public class ReminderFragment extends Fragment {
 
         java.util.Calendar today = java.util.Calendar.getInstance();
         int dayOfWeek = today.get(java.util.Calendar.DAY_OF_WEEK);
-        int dayOfMonth = today.get(java.util.Calendar.DAY_OF_MONTH);
 
         String repeat = reminder.getRepeat();
         if (repeat == null) repeat = "";
 
         boolean matchesRepeat = false;
-        switch (repeat) {
-            case "Một lần":
-                String reminderDate = reminder.getDate();
-                if (reminderDate != null && !reminderDate.isEmpty()) {
-                    try {
-                        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault());
-                        java.util.Date d = sdf.parse(reminderDate);
-                        if (d != null) {
-                            java.util.Calendar cal = java.util.Calendar.getInstance();
-                            cal.setTime(d);
-                            matchesRepeat = (cal.get(java.util.Calendar.DAY_OF_MONTH) == dayOfMonth);
-                        }
-                    } catch (java.text.ParseException e) {
-                        matchesRepeat = false;
-                    }
-                }
-                break;
-            case "Hàng ngày":
-                matchesRepeat = true;
-                break;
-            case "Ngày làm việc":
-                matchesRepeat = (dayOfWeek >= java.util.Calendar.MONDAY && dayOfWeek <= java.util.Calendar.FRIDAY);
-                break;
-            case "Cuối tuần":
-                matchesRepeat = (dayOfWeek == java.util.Calendar.SATURDAY || dayOfWeek == java.util.Calendar.SUNDAY);
-                break;
-            case "Hàng tuần":
-                matchesRepeat = true;
-                break;
-            case "Hàng tháng":
-                matchesRepeat = true;
-                break;
-            default:
-                matchesRepeat = true;
-                break;
+        String[] days = repeat.split(",");
+        for (String day : days) {
+            String trimmed = day.trim();
+            switch (trimmed) {
+                case "Thứ 2":
+                    if (dayOfWeek == java.util.Calendar.MONDAY) matchesRepeat = true;
+                    break;
+                case "Thứ 3":
+                    if (dayOfWeek == java.util.Calendar.TUESDAY) matchesRepeat = true;
+                    break;
+                case "Thứ 4":
+                    if (dayOfWeek == java.util.Calendar.WEDNESDAY) matchesRepeat = true;
+                    break;
+                case "Thứ 5":
+                    if (dayOfWeek == java.util.Calendar.THURSDAY) matchesRepeat = true;
+                    break;
+                case "Thứ 6":
+                    if (dayOfWeek == java.util.Calendar.FRIDAY) matchesRepeat = true;
+                    break;
+                case "Thứ 7":
+                    if (dayOfWeek == java.util.Calendar.SATURDAY) matchesRepeat = true;
+                    break;
+                case "Chủ nhật":
+                    if (dayOfWeek == java.util.Calendar.SUNDAY) matchesRepeat = true;
+                    break;
+            }
+            if (matchesRepeat) break;
         }
 
         if (!matchesRepeat) {

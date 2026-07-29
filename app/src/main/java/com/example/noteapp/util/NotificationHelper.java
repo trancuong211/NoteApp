@@ -81,12 +81,12 @@ public class NotificationHelper {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                context, reminderId + 50000, intent,
+                context, reminderId + ReminderScheduler.REMINDER_REQUEST_CODE_OFFSET, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
         String content = "Đến giờ: " + time;
-        if (repeat != null && !repeat.isEmpty() && !"Một lần".equals(repeat)) {
+        if (repeat != null && !repeat.isEmpty()) {
             content += " (" + repeat + ")";
         }
 
@@ -102,7 +102,7 @@ public class NotificationHelper {
 
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (manager != null) {
-            manager.notify(reminderId + 50000, builder.build());
+            manager.notify(reminderId + ReminderScheduler.REMINDER_REQUEST_CODE_OFFSET, builder.build());
         }
     }
 }

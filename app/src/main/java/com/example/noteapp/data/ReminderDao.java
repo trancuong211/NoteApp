@@ -24,7 +24,7 @@ public interface ReminderDao {
     LiveData<List<Reminder>> getInactive(int userId);
 
     @Insert
-    void insert(Reminder reminder);
+    long insert(Reminder reminder);
 
     @Update
     void update(Reminder reminder);

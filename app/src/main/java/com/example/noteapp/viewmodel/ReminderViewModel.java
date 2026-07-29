@@ -52,6 +52,15 @@ public class ReminderViewModel extends AndroidViewModel {
         executor.execute(() -> reminderDao.insert(reminder));
     }
 
+    public void insertWithCallback(Reminder reminder, java.util.function.LongConsumer callback) {
+        executor.execute(() -> {
+            long id = reminderDao.insert(reminder);
+            if (callback != null) {
+                callback.accept(id);
+            }
+        });
+    }
+
     public void update(Reminder reminder) {
         executor.execute(() -> reminderDao.update(reminder));
     }

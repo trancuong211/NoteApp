@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import com.example.noteapp.util.NotificationHelper;
+import com.example.noteapp.util.ReminderScheduler;
 
 public class ReminderReceiver extends BroadcastReceiver {
 
@@ -23,5 +24,9 @@ public class ReminderReceiver extends BroadcastReceiver {
         if (time == null) time = "";
 
         NotificationHelper.showReminder(context, reminderId, title, time, repeat);
+
+        if (repeat != null && !repeat.isEmpty()) {
+            ReminderScheduler.rescheduleForNextWeek(context, reminderId, title, time, repeat);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.noteapp.fragments;
 
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -21,17 +22,19 @@ import com.example.noteapp.util.ReminderScheduler;
 import com.example.noteapp.util.UserManager;
 import com.example.noteapp.viewmodel.ReminderViewModel;
 import com.google.android.material.chip.ChipGroup;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class NewReminderDialogFragment extends DialogFragment {
 
     private static final String[] REMINDER_ICONS = {"💧", "📅", "💪", "📖", "📧", "🏃", "💊", "🍎", "☕", "🛌"};
     private static final String[] REMINDER_COLORS = {"#38BDF8", "#00D68F", "#7C3AED", "#F59E0B", "#FF6B6B", "#EC4899"};
-    private static final String[] REPEAT_OPTIONS = {"Một lần", "Hàng ngày", "Ngày làm việc", "Cuối tuần", "Hàng tuần", "Hàng tháng"};
-    private static final String[] REPEAT_DATES = {"Một lần", "Hàng ngày", "Thứ 2 - Thứ 6", "Cuối tuần", "Hàng tuần", "Hàng tháng"};
+    private static final String[] REPEAT_OPTIONS = {"Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"};
+    private static final int[] REPEAT_DAYS = {Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY};
 
     private String selectedIcon = "💧";
     private String selectedColor = "#38BDF8";
-    private String selectedRepeat = "Hàng ngày";
     private ReminderViewModel reminderViewModel;
 
     @Nullable
@@ -53,6 +56,14 @@ public class NewReminderDialogFragment extends DialogFragment {
         ChipGroup chipGroupRepeat = view.findViewById(R.id.chip_group_repeat);
 
         btnClose.setOnClickListener(v -> dismiss());
+
+        etTime.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            new TimePickerDialog(requireContext(), (timeView, hourOfDay, minute) -> {
+                String time = String.format(java.util.Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                etTime.setText(time);
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+        });
 
         // Setup icon grid
         setupIconGrid(view);
@@ -79,11 +90,11 @@ public class NewReminderDialogFragment extends DialogFragment {
             }
 
             int repeatIndex = getSelectedRepeatIndex(chipGroupRepeat);
-            String repeat = REPEAT_OPTIONS[repeatIndex];
-            String date = REPEAT_DATES[repeatIndex];
+            String repeat = buildRepeatString(chipGroupRepeat);
+            String date = repeat;
 
             Reminder reminder = new Reminder(
-                (int) System.currentTimeMillis(),
+                0,
                 title,
                 time,
                 date,
@@ -93,16 +104,16 @@ public class NewReminderDialogFragment extends DialogFragment {
                 selectedColor
             );
             reminder.setUserId(UserManager.getUserId(requireContext()));
-            reminderViewModel.insert(reminder);
-
-            ReminderScheduler.scheduleReminder(
-                requireContext(),
-                reminder.getId(),
-                title,
-                time,
-                date,
-                repeat
-            );
+            reminderViewModel.insertWithCallback(reminder, id -> {
+                ReminderScheduler.scheduleReminder(
+                    requireContext(),
+                    (int) id,
+                    title,
+                    time,
+                    date,
+                    repeat
+                );
+            });
 
             dismiss();
         });
@@ -182,13 +193,39 @@ public class NewReminderDialogFragment extends DialogFragment {
 
     private int getSelectedRepeatIndex(ChipGroup chipGroup) {
         int checkedId = chipGroup.getCheckedChipId();
-        if (checkedId == R.id.chip_once) return 0;
-        if (checkedId == R.id.chip_daily) return 1;
-        if (checkedId == R.id.chip_workdays) return 2;
-        if (checkedId == R.id.chip_weekend) return 3;
-        if (checkedId == R.id.chip_weekly) return 4;
-        if (checkedId == R.id.chip_monthly) return 5;
-        return 1; // default: hàng ngày
+        if (checkedId == R.id.chip_mon) return 0;
+        if (checkedId == R.id.chip_tue) return 1;
+        if (checkedId == R.id.chip_wed) return 2;
+        if (checkedId == R.id.chip_thu) return 3;
+        if (checkedId == R.id.chip_fri) return 4;
+        if (checkedId == R.id.chip_sat) return 5;
+        if (checkedId == R.id.chip_sun) return 6;
+        return 0; // default: Thứ 2
+    }
+
+    private List<Integer> getSelectedRepeatDays(ChipGroup chipGroup) {
+        List<Integer> selectedDays = new ArrayList<>();
+        int[] chipIds = {R.id.chip_mon, R.id.chip_tue, R.id.chip_wed, R.id.chip_thu, R.id.chip_fri, R.id.chip_sat, R.id.chip_sun};
+        for (int i = 0; i < chipIds.length; i++) {
+            com.google.android.material.chip.Chip chip = chipGroup.findViewById(chipIds[i]);
+            if (chip != null && chip.isChecked()) {
+                selectedDays.add(i);
+            }
+        }
+        if (selectedDays.isEmpty()) {
+            selectedDays.add(0);
+        }
+        return selectedDays;
+    }
+
+    private String buildRepeatString(ChipGroup chipGroup) {
+        List<Integer> days = getSelectedRepeatDays(chipGroup);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < days.size(); i++) {
+            if (i > 0) sb.append(",");
+            sb.append(REPEAT_OPTIONS[days.get(i)]);
+        }
+        return sb.toString();
     }
 
     @Override
