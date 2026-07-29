@@ -167,6 +167,8 @@ public class NewTaskDialogFragment extends DialogFragment {
                 return;
             }
 
+            String todayStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+
             String deadline = "";
             if (!deadlineDate.isEmpty()) {
                 deadline = deadlineDate;
@@ -176,26 +178,37 @@ public class NewTaskDialogFragment extends DialogFragment {
             }
 
             String start = "";
-            if (!startDate.isEmpty()) {
-                start = startDate;
-                if (!startTime.isEmpty()) {
-                    start += " " + startTime;
-                }
+            if (!startTime.isEmpty()) {
+                start = (!startDate.isEmpty() ? startDate : todayStr) + " " + startTime;
+            } else if (!startDate.isEmpty()) {
+                start = startDate + " 08:00";
             }
 
-            String dateKey = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            String dateKey = "";
+            if (!deadlineDate.isEmpty()) {
+                try {
+                    String[] parts = deadlineDate.split("/");
+                    if (parts.length == 3) {
+                        dateKey = parts[2] + "-" + parts[1] + "-" + parts[0];
+                    }
+                } catch (Exception e) {
+                    dateKey = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                }
+            } else {
+                dateKey = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            }
             Task newTask = new Task(title, selectedCategory, selectedPriority, selectedStatus, start, deadline, dateKey);
             newTask.setUserId(UserManager.getUserId(requireContext()));
             taskViewModel.insert(newTask);
 
+            int notifIdBase = Math.abs(title.hashCode());
+
             if (!deadline.isEmpty()) {
-                int notificationId = (int) System.currentTimeMillis();
-                TaskScheduler.scheduleTaskReminder(requireContext(), notificationId, title, deadline, "deadline");
+                TaskScheduler.scheduleTaskReminder(requireContext(), notifIdBase, title, deadline, "deadline");
             }
 
             if (!start.isEmpty()) {
-                int notificationId = (int) (System.currentTimeMillis() + 1);
-                TaskScheduler.scheduleTaskReminder(requireContext(), notificationId, title, start, "start");
+                TaskScheduler.scheduleTaskReminder(requireContext(), notifIdBase + 1, title, start, "start");
             }
 
             dismiss();

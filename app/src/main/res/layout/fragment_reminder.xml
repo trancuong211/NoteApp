@@ -29,6 +29,19 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/btn_add_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_button_primary"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="+ Thêm"
+                android:textColor="@color/bg_dark"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/tv_active_badge"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
@@ -190,6 +203,49 @@
             android:textSize="14sp"
             android:lineSpacingExtra="4dp"
             android:visibility="gone" />
+
+        <!-- Queue Section - Today's Upcoming -->
+        <LinearLayout
+            android:id="@+id/layout_queue_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@color/accent_blue" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text="Hàng đợi hôm nay"
+                android:textColor="@color/accent_blue"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_queue_section_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_queue_reminders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="16dp" />
 
         <!-- Active Section -->
         <LinearLayout

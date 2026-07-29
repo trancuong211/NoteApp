@@ -8,22 +8,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import com.example.noteapp.R;
 import com.example.noteapp.model.Task;
+import com.example.noteapp.viewmodel.TaskViewModel;
 
 public class TaskDetailDialogFragment extends DialogFragment {
 
     private static final String ARG_TASK = "task";
 
     private Task task;
+    private TaskViewModel taskViewModel;
 
     public static TaskDetailDialogFragment newInstance(Task task) {
         TaskDetailDialogFragment fragment = new TaskDetailDialogFragment();
         Bundle args = new Bundle();
+        args.putInt("id", task.getId());
         args.putString("title", task.getTitle());
         args.putString("category", task.getCategory());
         args.putString("priority", task.getPriority());
+        args.putString("status", task.getStatus());
         args.putBoolean("isDone", task.isDone());
         fragment.setArguments(args);
         return fragment;
@@ -39,22 +45,34 @@ public class TaskDetailDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
+
         ImageView btnClose = view.findViewById(R.id.btn_close);
         TextView tvTitle = view.findViewById(R.id.tv_task_title);
         TextView tvStatus = view.findViewById(R.id.tv_task_status);
         TextView tvCategory = view.findViewById(R.id.tv_task_category);
         TextView tvPriority = view.findViewById(R.id.tv_task_priority);
         TextView btnCloseDialog = view.findViewById(R.id.btn_close_dialog);
+        TextView btnDeleteTask = view.findViewById(R.id.btn_delete_task);
 
         if (getArguments() != null) {
             String title = getArguments().getString("title");
-            String category = getArguments().getString("category");
-            String priority = getArguments().getString("priority");
+            String category = getArguments().getString("category", "");
+            String priority = getArguments().getString("priority", "");
+            String status = getArguments().getString("status", "todo");
             boolean isDone = getArguments().getBoolean("isDone");
 
             tvTitle.setText(title);
 
-            tvStatus.setText(isDone ? "Completed" : "Pending");
+            String statusLabel;
+            if ("done".equals(status)) {
+                statusLabel = "Hoàn thành";
+            } else if ("inprogress".equals(status)) {
+                statusLabel = "Đang làm";
+            } else {
+                statusLabel = "Chờ làm";
+            }
+            tvStatus.setText(statusLabel);
             tvStatus.setTextColor(getResources().getColor(isDone ? R.color.tag_low_text : R.color.tag_high_text));
             tvStatus.setBackgroundResource(isDone ? R.drawable.bg_tag_low : R.drawable.bg_tag_high);
 
@@ -69,61 +87,84 @@ public class TaskDetailDialogFragment extends DialogFragment {
 
         btnClose.setOnClickListener(v -> dismiss());
         btnCloseDialog.setOnClickListener(v -> dismiss());
+
+        btnDeleteTask.setOnClickListener(v -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Xóa nhiệm vụ")
+                    .setMessage("Bạn có chắc muốn xóa nhiệm vụ này?")
+                    .setPositiveButton("Xóa", (dialog, which) -> {
+                        int taskId = getArguments() != null ? getArguments().getInt("id", 0) : 0;
+                        String taskTitle = getArguments() != null ? getArguments().getString("title", "") : "";
+                        Task taskToDelete = new Task();
+                        taskToDelete.setId(taskId);
+                        taskToDelete.setTitle(taskTitle);
+                        taskViewModel.delete(taskToDelete);
+                        dismiss();
+                    })
+                    .setNegativeButton("Hủy", null)
+                    .show();
+        });
     }
 
     private String getCategoryEmoji(String category) {
+        if (category == null) category = "";
         switch (category) {
-            case "Work": return "💼";
-            case "Personal": return "👤";
-            case "Study": return "📚";
-            case "Health": return "❤️";
-            default: return "📋";
+            case "work": return "\uD83D\uDCBC";
+            case "personal": return "\uD83D\uDC64";
+            case "study": return "\uD83D\uDCDA";
+            case "health": return "\u2764\uFE0F";
+            default: return "\uD83D\uDCCB";
         }
     }
 
     private int getCategoryBackground(String category) {
+        if (category == null) category = "";
         switch (category) {
-            case "Work": return R.drawable.bg_tag_work;
-            case "Personal": return R.drawable.bg_tag_personal;
-            case "Study": return R.drawable.bg_tag_study;
-            case "Health": return R.drawable.bg_tag_health;
+            case "work": return R.drawable.bg_tag_work;
+            case "personal": return R.drawable.bg_tag_personal;
+            case "study": return R.drawable.bg_tag_study;
+            case "health": return R.drawable.bg_tag_health;
             default: return R.drawable.bg_tag_work;
         }
     }
 
     private int getCategoryTextColor(String category) {
+        if (category == null) category = "";
         switch (category) {
-            case "Work": return R.color.tag_work_text;
-            case "Personal": return R.color.tag_personal_text;
-            case "Study": return R.color.tag_study_text;
-            case "Health": return R.color.tag_health_text;
+            case "work": return R.color.tag_work_text;
+            case "personal": return R.color.tag_personal_text;
+            case "study": return R.color.tag_study_text;
+            case "health": return R.color.tag_health_text;
             default: return R.color.tag_work_text;
         }
     }
 
     private String getPriorityEmoji(String priority) {
+        if (priority == null) priority = "";
         switch (priority) {
-            case "High": return "🔴";
-            case "Medium": return "🟠";
-            case "Low": return "🟢";
-            default: return "⚪";
+            case "high": return "\uD83D\uDD34";
+            case "medium": return "\uD83D\uDFE0";
+            case "low": return "\uD83D\uDFE2";
+            default: return "\u26AA";
         }
     }
 
     private int getPriorityBackground(String priority) {
+        if (priority == null) priority = "";
         switch (priority) {
-            case "High": return R.drawable.bg_tag_high;
-            case "Medium": return R.drawable.bg_tag_medium;
-            case "Low": return R.drawable.bg_tag_low;
+            case "high": return R.drawable.bg_tag_high;
+            case "medium": return R.drawable.bg_tag_medium;
+            case "low": return R.drawable.bg_tag_low;
             default: return R.drawable.bg_tag_high;
         }
     }
 
     private int getPriorityTextColor(String priority) {
+        if (priority == null) priority = "";
         switch (priority) {
-            case "High": return R.color.tag_high_text;
-            case "Medium": return R.color.tag_medium_text;
-            case "Low": return R.color.tag_low_text;
+            case "high": return R.color.tag_high_text;
+            case "medium": return R.color.tag_medium_text;
+            case "low": return R.color.tag_low_text;
             default: return R.color.tag_high_text;
         }
     }

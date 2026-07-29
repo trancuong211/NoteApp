@@ -74,4 +74,35 @@ public class NotificationHelper {
             manager.notify(taskId, builder.build());
         }
     }
+
+    public static void showReminder(Context context, int reminderId, String title, String time, String repeat) {
+        createNotificationChannel(context);
+
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, reminderId + 50000, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        String content = "Đến giờ: " + time;
+        if (repeat != null && !repeat.isEmpty() && !"Một lần".equals(repeat)) {
+            content += " (" + repeat + ")";
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle("\uD83D\uDD14 " + title)
+                .setContentText(content)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setVibrate(new long[]{0, 500, 200, 500});
+
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        if (manager != null) {
+            manager.notify(reminderId + 50000, builder.build());
+        }
+    }
 }

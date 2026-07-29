@@ -1,6 +1,8 @@
 package com.example.noteapp.fragments;
 
 import android.Manifest;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -17,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +36,7 @@ public class SettingsFragment extends Fragment {
     private SwitchMaterial switchNotifications;
     private TextView tvProfileName;
     private TextView tvProfileAvatar;
+    private TextView tvReminderDefaultTime;
     private UserViewModel userViewModel;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -41,6 +45,15 @@ public class SettingsFragment extends Fragment {
                     exportData();
                 } else {
                     Toast.makeText(getContext(), "Cần cấp quyền truy cập bộ nhớ để xuất dữ liệu", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private final ActivityResultLauncher<String> requestManageStorageLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    exportData();
+                } else {
+                    Toast.makeText(getContext(), "Cần cấp quyền quản lý bộ nhớ để xuất dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -70,6 +83,14 @@ public class SettingsFragment extends Fragment {
         switchNotifications = view.findViewById(R.id.switch_notifications);
         tvProfileName = view.findViewById(R.id.tv_profile_name);
         tvProfileAvatar = view.findViewById(R.id.tv_profile_avatar);
+        tvReminderDefaultTime = view.findViewById(R.id.tv_reminder_default_time);
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("app_prefs", 0);
+        switchDarkMode.setChecked(prefs.getBoolean("dark_mode", true));
+        switchNotifications.setChecked(prefs.getBoolean("notifications_enabled", true));
+
+        int reminderMinutes = prefs.getInt("reminder_default_minutes", 30);
+        tvReminderDefaultTime.setText(getReminderText(reminderMinutes));
     }
 
     private void loadUserProfile() {
@@ -93,19 +114,30 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setupListeners(View view) {
-        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) ->
-                Toast.makeText(getContext(), isChecked ? "Đã bật chế độ tối" : "Đã tắt chế độ tối", Toast.LENGTH_SHORT).show());
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences prefs = requireContext().getSharedPreferences("app_prefs", 0);
+            prefs.edit().putBoolean("dark_mode", isChecked).apply();
+            Toast.makeText(getContext(), isChecked ? "Đã bật chế độ tối (áp dụng khi mở lại app)" : "Đã tắt chế độ tối (áp dụng khi mở lại app)", Toast.LENGTH_SHORT).show();
+        });
 
-        switchNotifications.setOnCheckedChangeListener((buttonView, isChecked) ->
-                Toast.makeText(getContext(), isChecked ? "Đã bật thông báo" : "Đã tắt thông báo", Toast.LENGTH_SHORT).show());
+        switchNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences prefs = requireContext().getSharedPreferences("app_prefs", 0);
+            prefs.edit().putBoolean("notifications_enabled", isChecked).apply();
+            if (!isChecked) {
+                NotificationManager nm = requireContext().getSystemService(NotificationManager.class);
+                if (nm != null) {
+                    nm.cancelAll();
+                }
+            }
+            Toast.makeText(getContext(), isChecked ? "Đã bật thông báo" : "Đã tắt thông báo", Toast.LENGTH_SHORT).show();
+        });
 
         view.findViewById(R.id.card_profile).setOnClickListener(v -> {
             EditProfileDialogFragment dialog = new EditProfileDialogFragment();
             dialog.show(getParentFragmentManager(), "EditProfileDialog");
         });
 
-        view.findViewById(R.id.card_reminder_default).setOnClickListener(v ->
-                Toast.makeText(getContext(), "Coming soon", Toast.LENGTH_SHORT).show());
+        view.findViewById(R.id.card_reminder_default).setOnClickListener(v -> showReminderDefaultDialog());
 
         view.findViewById(R.id.card_profile_info).setOnClickListener(v -> {
             EditProfileDialogFragment dialog = new EditProfileDialogFragment();
@@ -132,11 +164,17 @@ public class SettingsFragment extends Fragment {
 
     private void checkPermissionAndExport() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (Environment.isExternalStorageManager()) {
                 exportData();
             } else {
-                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES);
+                try {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(android.net.Uri.parse("package:" + requireContext().getPackageName()));
+                    requestManageStorageLauncher.launch(Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+                } catch (Exception e) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    requestManageStorageLauncher.launch(Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+                }
             }
         } else {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -153,14 +191,18 @@ public class SettingsFragment extends Fragment {
         DataManager.exportData(requireContext(), new DataManager.OnResultListener() {
             @Override
             public void onSuccess(String message) {
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
+                }
             }
 
             @Override
             public void onError(String error) {
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show());
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show());
+                }
             }
         });
     }
@@ -179,14 +221,18 @@ public class SettingsFragment extends Fragment {
         DataManager.importData(requireContext(), new DataManager.OnResultListener() {
             @Override
             public void onSuccess(String message) {
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
+                }
             }
 
             @Override
             public void onError(String error) {
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show());
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show());
+                }
             }
         });
     }
@@ -211,5 +257,35 @@ public class SettingsFragment extends Fragment {
             startActivity(intent);
             requireActivity().finish();
         }));
+    }
+
+    private void showReminderDefaultDialog() {
+        String[] options = {"5 phút trước", "10 phút trước", "15 phút trước", "30 phút trước", "60 phút trước"};
+        int[] values = {5, 10, 15, 30, 60};
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("app_prefs", 0);
+        int current = prefs.getInt("reminder_default_minutes", 30);
+        int checkedItem = 3;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == current) {
+                checkedItem = i;
+                break;
+            }
+        }
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Nhắc nhở mặc định")
+                .setSingleChoiceItems(options, checkedItem, (dialog, which) -> {
+                    prefs.edit().putInt("reminder_default_minutes", values[which]).apply();
+                    tvReminderDefaultTime.setText(getReminderText(values[which]));
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private String getReminderText(int minutes) {
+        if (minutes < 60) return minutes + " phút trước";
+        return (minutes / 60) + " giờ trước";
     }
 }

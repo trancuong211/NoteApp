@@ -44,9 +44,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.tvTitle.setText(note.getTitle());
         holder.tvContent.setText(note.getContent());
 
-        holder.tvCategory.setText(getCategoryEmoji(note.getCategory()) + " " + note.getCategory());
-        holder.tvCategory.setBackgroundResource(getCategoryBackground(note.getCategory()));
-        holder.tvCategory.setTextColor(holder.itemView.getContext().getResources().getColor(getCategoryTextColor(note.getCategory())));
+        String category = note.getCategory() != null ? note.getCategory() : "";
+        holder.tvCategory.setText(getCategoryEmoji(category) + " " + category);
+        holder.tvCategory.setBackgroundResource(getCategoryBackground(category));
+        holder.tvCategory.setTextColor(holder.itemView.getContext().getResources().getColor(getCategoryTextColor(category)));
 
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) {
@@ -67,16 +68,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     private String getCategoryEmoji(String category) {
+        if (category == null) category = "";
         switch (category) {
-            case "Work": return "💼";
-            case "Personal": return "👤";
-            case "Study": return "📚";
-            case "Health": return "❤️";
-            default: return "📋";
+            case "Work": return "\uD83D\uDCBC";
+            case "Personal": return "\uD83D\uDC64";
+            case "Study": return "\uD83D\uDCDA";
+            case "Health": return "\u2764\uFE0F";
+            default: return "\uD83D\uDCCB";
         }
     }
 
     private int getCategoryBackground(String category) {
+        if (category == null) category = "";
         switch (category) {
             case "Work": return R.drawable.bg_tag_work;
             case "Personal": return R.drawable.bg_tag_personal;
@@ -87,6 +90,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     private int getCategoryTextColor(String category) {
+        if (category == null) category = "";
         switch (category) {
             case "Work": return R.color.tag_work_text;
             case "Personal": return R.color.tag_personal_text;

@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.noteapp.R;
 import com.example.noteapp.model.Reminder;
+import com.example.noteapp.util.ReminderScheduler;
 import com.example.noteapp.util.UserManager;
 import com.example.noteapp.viewmodel.ReminderViewModel;
 import com.google.android.material.chip.ChipGroup;
@@ -70,7 +71,12 @@ public class NewReminderDialogFragment extends DialogFragment {
                 return;
             }
             String time = etTime.getText().toString().trim();
-            if (time.isEmpty()) time = "08:00";
+            if (time.isEmpty()) {
+                time = "08:00";
+            } else if (!time.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+                etTime.setError("Định dạng giờ không hợp lệ (HH:mm)");
+                return;
+            }
 
             int repeatIndex = getSelectedRepeatIndex(chipGroupRepeat);
             String repeat = REPEAT_OPTIONS[repeatIndex];
@@ -88,6 +94,16 @@ public class NewReminderDialogFragment extends DialogFragment {
             );
             reminder.setUserId(UserManager.getUserId(requireContext()));
             reminderViewModel.insert(reminder);
+
+            ReminderScheduler.scheduleReminder(
+                requireContext(),
+                reminder.getId(),
+                title,
+                time,
+                date,
+                repeat
+            );
+
             dismiss();
         });
     }

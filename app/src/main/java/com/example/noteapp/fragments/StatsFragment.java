@@ -210,8 +210,7 @@ public class StatsFragment extends Fragment {
 
         for (Task task : tasks) {
             if (task.isDone()) {
-                int randomDay = (int) (Math.random() * 7);
-                dailyDone[randomDay]++;
+                dailyDone[today - 1]++;
             }
         }
 
@@ -238,10 +237,10 @@ public class StatsFragment extends Fragment {
         int work = 0, personal = 0, study = 0, health = 0;
         for (Task task : tasks) {
             switch (task.getCategory()) {
-                case "Work": work++; break;
-                case "Personal": personal++; break;
-                case "Study": study++; break;
-                case "Health": health++; break;
+                case "work": work++; break;
+                case "personal": personal++; break;
+                case "study": study++; break;
+                case "health": health++; break;
             }
         }
 
@@ -257,9 +256,9 @@ public class StatsFragment extends Fragment {
         int high = 0, medium = 0, low = 0;
         for (Task task : tasks) {
             switch (task.getPriority()) {
-                case "High": high++; break;
-                case "Medium": medium++; break;
-                case "Low": low++; break;
+                case "high": high++; break;
+                case "medium": medium++; break;
+                case "low": low++; break;
             }
         }
 
@@ -293,10 +292,10 @@ public class StatsFragment extends Fragment {
         int work = 0, personal = 0, study = 0, health = 0;
         for (Task task : tasks) {
             switch (task.getCategory()) {
-                case "Work": work++; break;
-                case "Personal": personal++; break;
-                case "Study": study++; break;
-                case "Health": health++; break;
+                case "work": work++; break;
+                case "personal": personal++; break;
+                case "study": study++; break;
+                case "health": health++; break;
             }
         }
 
@@ -315,9 +314,9 @@ public class StatsFragment extends Fragment {
         int high = 0, medium = 0, low = 0;
         for (Task task : tasks) {
             switch (task.getPriority()) {
-                case "High": high++; break;
-                case "Medium": medium++; break;
-                case "Low": low++; break;
+                case "high": high++; break;
+                case "medium": medium++; break;
+                case "low": low++; break;
             }
         }
 

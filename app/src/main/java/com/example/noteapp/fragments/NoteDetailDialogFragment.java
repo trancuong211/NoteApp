@@ -42,7 +42,7 @@ public class NoteDetailDialogFragment extends DialogFragment {
         if (getArguments() != null) {
             String title = getArguments().getString("title");
             String content = getArguments().getString("content");
-            String category = getArguments().getString("category");
+            String category = getArguments().getString("category", "");
 
             tvTitle.setText(title);
 
@@ -58,16 +58,18 @@ public class NoteDetailDialogFragment extends DialogFragment {
     }
 
     private String getCategoryEmoji(String category) {
+        if (category == null) category = "";
         switch (category) {
-            case "Work": return "💼";
-            case "Personal": return "👤";
-            case "Study": return "📚";
-            case "Health": return "❤️";
-            default: return "📋";
+            case "Work": return "\uD83D\uDCBC";
+            case "Personal": return "\uD83D\uDC64";
+            case "Study": return "\uD83D\uDCDA";
+            case "Health": return "\u2764\uFE0F";
+            default: return "\uD83D\uDCCB";
         }
     }
 
     private int getCategoryBackground(String category) {
+        if (category == null) category = "";
         switch (category) {
             case "Work": return R.drawable.bg_tag_work;
             case "Personal": return R.drawable.bg_tag_personal;
@@ -78,6 +80,7 @@ public class NoteDetailDialogFragment extends DialogFragment {
     }
 
     private int getCategoryTextColor(String category) {
+        if (category == null) category = "";
         switch (category) {
             case "Work": return R.color.tag_work_text;
             case "Personal": return R.color.tag_personal_text;

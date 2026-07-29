@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import com.example.noteapp.receiver.TaskReminderReceiver;
 import java.text.ParseException;
@@ -21,7 +22,9 @@ public class TaskScheduler {
         if (targetTime == null) return false;
 
         if ("deadline".equals(type)) {
-            targetTime.add(Calendar.MINUTE, -30);
+            SharedPreferences prefs = context.getSharedPreferences("app_prefs", 0);
+            int reminderMinutes = prefs.getInt("reminder_default_minutes", 30);
+            targetTime.add(Calendar.MINUTE, -reminderMinutes);
         }
 
         if (targetTime.getTimeInMillis() <= System.currentTimeMillis()) {

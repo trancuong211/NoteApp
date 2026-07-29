@@ -34,7 +34,7 @@
         android:textColor="@color/text_primary"
         android:textColorHint="@color/text_secondary"
         android:textSize="15sp"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords|textNoSuggestions"
         android:layout_marginBottom="16dp" />
 
     <TextView

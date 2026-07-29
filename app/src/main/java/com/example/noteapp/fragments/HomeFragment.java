@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
             dialog.show(getParentFragmentManager(), "NewTaskDialog");
         });
 
-        view.findViewById(R.id.btn_calendar).setOnClickListener(v -> switchTab(R.id.nav_calendar));
+        view.findViewById(R.id.btn_calendar).setOnClickListener(v -> switchTab(R.id.nav_tasks));
 
         view.findViewById(R.id.btn_reminders).setOnClickListener(v -> switchTab(R.id.nav_reminder));
 
@@ -294,11 +294,11 @@ public class HomeFragment extends Fragment {
             }
 
             String priority = task.getPriority();
-            if ("High".equals(priority)) {
+            if ("high".equals(priority)) {
                 holder.tvPriorityBadge.setText("Cao");
                 holder.tvPriorityBadge.setTextColor(ContextCompat.getColor(requireContext(), R.color.tag_high_text));
                 holder.tvPriorityBadge.setBackgroundResource(R.drawable.bg_tag_high);
-            } else if ("Medium".equals(priority)) {
+            } else if ("medium".equals(priority)) {
                 holder.tvPriorityBadge.setText("TB");
                 holder.tvPriorityBadge.setTextColor(ContextCompat.getColor(requireContext(), R.color.tag_medium_text));
                 holder.tvPriorityBadge.setBackgroundResource(R.drawable.bg_tag_medium);
@@ -377,13 +377,13 @@ public class HomeFragment extends Fragment {
                 String color = reminder.getColor();
                 int bgColor;
                 int iconColor;
-                if ("red".equals(color)) {
+                if ("#FF6B6B".equals(color)) {
                     bgColor = ContextCompat.getColor(requireContext(), R.color.tag_high_bg);
                     iconColor = ContextCompat.getColor(requireContext(), R.color.tag_high_text);
-                } else if ("blue".equals(color)) {
+                } else if ("#38BDF8".equals(color)) {
                     bgColor = ContextCompat.getColor(requireContext(), R.color.tag_low_bg);
                     iconColor = ContextCompat.getColor(requireContext(), R.color.tag_low_text);
-                } else if ("purple".equals(color)) {
+                } else if ("#7C3AED".equals(color)) {
                     bgColor = ContextCompat.getColor(requireContext(), R.color.tag_personal_bg);
                     iconColor = ContextCompat.getColor(requireContext(), R.color.tag_personal_text);
                 } else {

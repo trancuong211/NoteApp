@@ -143,18 +143,28 @@ public class DataManager {
                 JSONArray usersArray = root.getJSONArray("users");
 
                 AppDatabase db = AppDatabase.getInstance(context);
+                int importedCount = 0;
 
                 for (int i = 0; i < usersArray.length(); i++) {
                     JSONObject userObj = usersArray.getJSONObject(i);
 
-                    User user = new User(
-                            userObj.getString("fullName"),
-                            userObj.getString("email"),
-                            userObj.getString("phone"),
-                            userObj.getString("password")
-                    );
-                    long userId = db.userDao().insert(user);
-                    int userIdInt = (int) userId;
+                    String email = userObj.getString("email");
+                    User existingUser = db.userDao().getByEmail(email);
+
+                    int userIdInt;
+                    if (existingUser != null) {
+                        userIdInt = existingUser.getId();
+                    } else {
+                        User user = new User(
+                                userObj.getString("fullName"),
+                                email,
+                                userObj.getString("phone"),
+                                userObj.getString("password")
+                        );
+                        long userId = db.userDao().insert(user);
+                        userIdInt = (int) userId;
+                        importedCount++;
+                    }
 
                     JSONArray tasksArray = userObj.getJSONArray("tasks");
                     for (int j = 0; j < tasksArray.length(); j++) {
@@ -203,7 +213,7 @@ public class DataManager {
                 }
 
                 if (listener != null) {
-                    listener.onSuccess("Đã khôi phục " + usersArray.length() + " tài khoản từ backup!");
+                    listener.onSuccess("Đã nhập dữ liệu từ " + importedCount + " tài khoản mới!");
                 }
             } catch (Exception e) {
                 if (listener != null) {

@@ -125,13 +125,13 @@ public class TasksFragment extends Fragment {
             if (id == R.id.chip_cat_all) {
                 selectedCategory = null;
             } else if (id == R.id.chip_cat_work) {
-                selectedCategory = "Work";
+                selectedCategory = "work";
             } else if (id == R.id.chip_cat_personal) {
-                selectedCategory = "Personal";
+                selectedCategory = "personal";
             } else if (id == R.id.chip_cat_study) {
-                selectedCategory = "Study";
+                selectedCategory = "study";
             } else if (id == R.id.chip_cat_health) {
-                selectedCategory = "Health";
+                selectedCategory = "health";
             }
             updateCategoryChips();
             applyFilters();
@@ -145,10 +145,10 @@ public class TasksFragment extends Fragment {
         TextView[] chips = {chipCatAll, chipCatWork, chipCatPersonal, chipCatStudy, chipCatHealth};
         boolean[] selected = {
                 selectedCategory == null,
-                "Work".equals(selectedCategory),
-                "Personal".equals(selectedCategory),
-                "Study".equals(selectedCategory),
-                "Health".equals(selectedCategory)
+                "work".equals(selectedCategory),
+                "personal".equals(selectedCategory),
+                "study".equals(selectedCategory),
+                "health".equals(selectedCategory)
         };
         for (int i = 0; i < chips.length; i++) {
             if (selected[i]) {
@@ -283,13 +283,16 @@ public class TasksFragment extends Fragment {
 
         tvTitle.setText(task.getTitle());
 
-        tvCategory.setText(getCategoryEmoji(task.getCategory()) + " " + task.getCategory());
-        tvCategory.setBackgroundResource(getCategoryBackground(task.getCategory()));
-        tvCategory.setTextColor(getResources().getColor(getCategoryTextColor(task.getCategory())));
+        String category = task.getCategory() != null ? task.getCategory() : "";
+        String priority = task.getPriority() != null ? task.getPriority() : "";
 
-        tvPriority.setText(getPriorityEmoji(task.getPriority()) + " " + task.getPriority());
-        tvPriority.setBackgroundResource(getPriorityBackground(task.getPriority()));
-        tvPriority.setTextColor(getResources().getColor(getPriorityTextColor(task.getPriority())));
+        tvCategory.setText(getCategoryEmoji(category) + " " + category);
+        tvCategory.setBackgroundResource(getCategoryBackground(category));
+        tvCategory.setTextColor(getResources().getColor(getCategoryTextColor(category)));
+
+        tvPriority.setText(getPriorityEmoji(priority) + " " + priority);
+        tvPriority.setBackgroundResource(getPriorityBackground(priority));
+        tvPriority.setTextColor(getResources().getColor(getPriorityTextColor(priority)));
 
         android.graphics.drawable.GradientDrawable statusDrawable = new android.graphics.drawable.GradientDrawable();
         statusDrawable.setShape(android.graphics.drawable.GradientDrawable.OVAL);
@@ -328,57 +331,57 @@ public class TasksFragment extends Fragment {
 
     private String getCategoryEmoji(String category) {
         switch (category) {
-            case "Work": return "\uD83D\uDCBC";
-            case "Personal": return "\uD83D\uDC64";
-            case "Study": return "\uD83D\uDCDA";
-            case "Health": return "\u2764\uFE0F";
+            case "work": return "\uD83D\uDCBC";
+            case "personal": return "\uD83D\uDC64";
+            case "study": return "\uD83D\uDCDA";
+            case "health": return "\u2764\uFE0F";
             default: return "\uD83D\uDCCB";
         }
     }
 
     private int getCategoryBackground(String category) {
         switch (category) {
-            case "Work": return R.drawable.bg_tag_work;
-            case "Personal": return R.drawable.bg_tag_personal;
-            case "Study": return R.drawable.bg_tag_study;
-            case "Health": return R.drawable.bg_tag_health;
+            case "work": return R.drawable.bg_tag_work;
+            case "personal": return R.drawable.bg_tag_personal;
+            case "study": return R.drawable.bg_tag_study;
+            case "health": return R.drawable.bg_tag_health;
             default: return R.drawable.bg_tag_work;
         }
     }
 
     private int getCategoryTextColor(String category) {
         switch (category) {
-            case "Work": return R.color.tag_work_text;
-            case "Personal": return R.color.tag_personal_text;
-            case "Study": return R.color.tag_study_text;
-            case "Health": return R.color.tag_health_text;
+            case "work": return R.color.tag_work_text;
+            case "personal": return R.color.tag_personal_text;
+            case "study": return R.color.tag_study_text;
+            case "health": return R.color.tag_health_text;
             default: return R.color.tag_work_text;
         }
     }
 
     private String getPriorityEmoji(String priority) {
         switch (priority) {
-            case "High": return "\uD83D\uDD34";
-            case "Medium": return "\uD83D\uDFE0";
-            case "Low": return "\uD83D\uDFE2";
+            case "high": return "\uD83D\uDD34";
+            case "medium": return "\uD83D\uDFE0";
+            case "low": return "\uD83D\uDFE2";
             default: return "\u26AA";
         }
     }
 
     private int getPriorityBackground(String priority) {
         switch (priority) {
-            case "High": return R.drawable.bg_tag_high;
-            case "Medium": return R.drawable.bg_tag_medium;
-            case "Low": return R.drawable.bg_tag_low;
+            case "high": return R.drawable.bg_tag_high;
+            case "medium": return R.drawable.bg_tag_medium;
+            case "low": return R.drawable.bg_tag_low;
             default: return R.drawable.bg_tag_high;
         }
     }
 
     private int getPriorityTextColor(String priority) {
         switch (priority) {
-            case "High": return R.color.tag_high_text;
-            case "Medium": return R.color.tag_medium_text;
-            case "Low": return R.color.tag_low_text;
+            case "high": return R.color.tag_high_text;
+            case "medium": return R.color.tag_medium_text;
+            case "low": return R.color.tag_low_text;
             default: return R.color.tag_high_text;
         }
     }

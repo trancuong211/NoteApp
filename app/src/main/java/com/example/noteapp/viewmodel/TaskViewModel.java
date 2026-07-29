@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.noteapp.data.AppDatabase;
 import com.example.noteapp.data.TaskDao;
 import com.example.noteapp.model.Task;
+import com.example.noteapp.util.TaskScheduler;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,11 +59,22 @@ public class TaskViewModel extends AndroidViewModel {
     }
 
     public void delete(Task task) {
-        executor.execute(() -> taskDao.delete(task));
+        executor.execute(() -> {
+            if (task.getTitle() != null) {
+                int notifIdBase = Math.abs(task.getTitle().hashCode());
+                TaskScheduler.cancelTaskReminder(getApplication(), notifIdBase);
+                TaskScheduler.cancelTaskReminder(getApplication(), notifIdBase + 1);
+            }
+            taskDao.delete(task);
+        });
     }
 
     public void deleteById(int id) {
-        executor.execute(() -> taskDao.deleteById(id));
+        executor.execute(() -> {
+            TaskScheduler.cancelTaskReminder(getApplication(), id);
+            TaskScheduler.cancelTaskReminder(getApplication(), id + 1);
+            taskDao.deleteById(id);
+        });
     }
 
     public void toggleTaskDone(Task task) {

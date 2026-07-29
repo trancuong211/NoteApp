@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.noteapp.data.AppDatabase;
 import com.example.noteapp.data.ReminderDao;
 import com.example.noteapp.model.Reminder;
+import com.example.noteapp.util.ReminderScheduler;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,16 +57,34 @@ public class ReminderViewModel extends AndroidViewModel {
     }
 
     public void delete(Reminder reminder) {
-        executor.execute(() -> reminderDao.delete(reminder));
+        executor.execute(() -> {
+            ReminderScheduler.cancelReminder(getApplication(), reminder.getId());
+            reminderDao.delete(reminder);
+        });
     }
 
     public void deleteById(int id) {
-        executor.execute(() -> reminderDao.deleteById(id));
+        executor.execute(() -> {
+            ReminderScheduler.cancelReminder(getApplication(), id);
+            reminderDao.deleteById(id);
+        });
     }
 
     public void toggleReminder(Reminder reminder) {
         executor.execute(() -> {
             reminder.setActive(!reminder.isActive());
+            if (reminder.isActive()) {
+                ReminderScheduler.scheduleReminder(
+                        getApplication(),
+                        reminder.getId(),
+                        reminder.getTitle(),
+                        reminder.getTime(),
+                        reminder.getDate(),
+                        reminder.getRepeat()
+                );
+            } else {
+                ReminderScheduler.cancelReminder(getApplication(), reminder.getId());
+            }
             reminderDao.update(reminder);
         });
     }

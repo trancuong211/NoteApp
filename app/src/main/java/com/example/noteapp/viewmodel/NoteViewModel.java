@@ -39,6 +39,10 @@ public class NoteViewModel extends AndroidViewModel {
         executor.execute(() -> noteDao.insert(note));
     }
 
+    public void update(Note note) {
+        executor.execute(() -> noteDao.update(note));
+    }
+
     public void delete(Note note) {
         executor.execute(() -> noteDao.delete(note));
     }

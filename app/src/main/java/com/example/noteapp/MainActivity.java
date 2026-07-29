@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment;
 import com.example.noteapp.fragments.CalendarFragment;
 import com.example.noteapp.fragments.HomeFragment;
 import com.example.noteapp.fragments.NewTaskDialogFragment;
+import com.example.noteapp.fragments.NotesFragment;
 import com.example.noteapp.fragments.ReminderFragment;
 import com.example.noteapp.fragments.SettingsFragment;
+import com.example.noteapp.fragments.StatsFragment;
 import com.example.noteapp.fragments.TasksFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,14 +48,17 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
                 fab.setVisibility(View.VISIBLE);
-            } else if (itemId == R.id.nav_calendar) {
-                selectedFragment = new CalendarFragment();
+            } else if (itemId == R.id.nav_notes) {
+                selectedFragment = new NotesFragment();
                 fab.setVisibility(View.GONE);
             } else if (itemId == R.id.nav_tasks) {
                 selectedFragment = new TasksFragment();
                 fab.setVisibility(View.VISIBLE);
             } else if (itemId == R.id.nav_reminder) {
                 selectedFragment = new ReminderFragment();
+                fab.setVisibility(View.GONE);
+            } else if (itemId == R.id.nav_stats) {
+                selectedFragment = new StatsFragment();
                 fab.setVisibility(View.GONE);
             } else if (itemId == R.id.nav_settings) {
                 selectedFragment = new SettingsFragment();
